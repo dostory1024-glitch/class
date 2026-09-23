@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="description" content="계획대로 되지 않았던 수업을 나누고, 서로의 도전에 공감을 보내는 교원 연수 공간.">
+  <title>망한 수업 자랑하기 — 함께 나누는 수업의 뒷이야기</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="망한 수업 자랑하기 홈">
+        <span class="brand-mark" data-icon="sparkles"></span>
+        <span><strong>망한 수업 자랑하기<span class="brand-dot">.</span></strong></span>
+      </a>
+      <nav class="tabs" role="tablist" aria-label="연수 화면">
+        <button id="tab-collect" class="tab" role="tab" aria-selected="false" aria-controls="panel-collect" tabindex="-1" data-tab="collect"><span data-icon="pen"></span>사연 올리기</button>
+        <button id="tab-board" class="tab active" role="tab" aria-selected="true" aria-controls="panel-board" data-tab="board"><span data-icon="grid"></span>사연 모아보기</button>
+      </nav>
+      <div id="connection" class="connection" role="status"><span class="status-dot"></span><span id="connection-label">연결 중</span></div>
+    </div>
+  </header>
+
+  <main id="main" class="page-shell">
+    <section id="panel-board" role="tabpanel" aria-labelledby="tab-board">
+      <div class="workspace">
+        <div class="board-main">
+          <section class="hero">
+            <p class="eyebrow"><span class="short-line"></span>우리의 수업, 그 비하인드</p>
+            <h1>계획대로 안 된 수업,<br><span>여기서는 자랑이 됩니다.</span></h1>
+            <p class="hero-description">조금 웃기고, 조금 눈물 나는 이야기.<br class="mobile-only"> 나누고 공감해요.</p>
+            <div class="hero-bottom">
+              <div class="statistics"><span>접수된 사연 <strong id="story-total">0</strong></span><span class="stat-divider"></span><span>모인 공감 <strong id="heart-total">0</strong><span class="tiny-heart" data-icon="heart"></span></span></div>
+            </div>
+          </section>
+
+          <section class="stories-section" aria-label="공유된 수업 사연">
+            <div class="board-toolbar">
+              <div class="list-heading"><h2>함께 나누는 이야기</h2><span id="visible-count" class="count-badge">0</span></div>
+              <div class="list-controls">
+                <label class="search-box"><span data-icon="search"></span><input id="search" type="search" placeholder="사연 검색" aria-label="닉네임이나 사연 검색"></label>
+                <label class="sort-box"><span class="sr-only">사연 정렬</span><select id="sort"><option value="latest">최신순</option><option value="hearts">공감 많은 순</option></select><span data-icon="chevron-down"></span></label>
+              </div>
+            </div>
+            <div id="sample-notice" class="sample-notice" hidden><span><span data-icon="info"></span><strong>예시 사연</strong> 화면을 미리 둘러보세요. 실제 접수 건수에는 포함되지 않아요.</span><button id="hide-samples" class="text-button">닫기</button></div>
+            <div id="load-error" class="inline-error" role="alert" hidden>연결이 잠시 끊겼어요. 자동으로 다시 연결하고 있습니다. <button id="retry" class="text-button">다시 연결</button></div>
+            <div id="story-grid" class="story-grid" aria-busy="true"></div>
+            <div id="empty-state" class="empty-state" hidden>
+              <div class="empty-icon" data-icon="message"></div>
+              <h3 id="empty-title">첫 번째 이야기를 기다리고 있어요.</h3>
+              <p id="empty-description">거창한 이야기가 아니어도 괜찮아요.<br>예상 밖으로 흘러간 수업 하나를 들려주세요.</p>
+              <div class="empty-actions"><button class="button primary" id="empty-write">첫 사연 남기기 <span data-icon="arrow-right"></span></button><button class="button secondary" id="show-samples">예시 둘러보기</button></div>
+            </div>
+            <div class="board-footer"><span id="refresh-note">사연과 공감이 자동으로 업데이트됩니다.</span></div>
+          </section>
+        </div>
+
+        <aside class="participation" aria-label="연수 참여 안내">
+          <div class="participation-card">
+            <div class="aside-eyebrow"><span class="status-dot"></span>지금, 함께 나누는 중</div>
+            <h2>선생님의 이야기도<br>들려주세요.</h2>
+            <p>휴대폰으로 QR 코드를 스캔하고<br>수업의 뒷이야기를 남겨주세요.</p>
+            <button class="qr-button" id="open-qr" aria-label="참여 QR 코드 크게 보기"><img class="qr-image" src="/api/qr" width="232" height="232" alt="사연 작성 화면으로 연결되는 QR 코드"><span><span data-icon="expand"></span>크게 보기</span></button>
+            <button class="button primary wide" id="aside-write"><span data-icon="pen"></span>바로 사연 쓰기</button>
+            <button class="button copy-button wide" id="copy-link"><span data-icon="link"></span>참여 링크 복사</button>
+            <p id="network-note" class="network-note">QR로 접속해 함께 참여해 주세요.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="panel-collect" role="tabpanel" aria-labelledby="tab-collect" hidden>
+      <div class="collect-layout">
+        <div class="collect-intro">
+          <h1>그날의 수업을<br>들려주세요.</h1>
+          <p>준비는 완벽했는데, 결과는 예상 밖.<br>혼자 간직했던 그 이야기를 나눠주세요.</p>
+          <div class="intro-quote"><span class="quote-mark">“</span><p>잘 안 된 수업 하나가<br>누군가에겐 새로운<br>시작이 될 수 있으니까.</p><span class="quote-rule"></span><small>우리 모두, 배우는 중입니다.</small></div>
+          <div class="privacy-note"><span data-icon="info"></span><p>사연은 참가자 모두에게 공개됩니다.<br>학생의 실명이나 개인정보는 적지 말아 주세요.</p></div>
+        </div>
+        <div class="form-card">
+          <div class="form-heading"><span class="form-kicker">YOUR STORY</span><span class="anonymous-chip"><span data-icon="user"></span>닉네임으로 참여</span></div>
+          <form id="story-form">
+            <div class="field-group"><div class="field-label"><label for="nickname">어떤 이름으로 남길까요?</label><span id="nickname-count">0 / 20</span></div><input id="nickname" name="nickname" required autocomplete="nickname" placeholder="예: 오늘도 도전하는 김쌤" aria-describedby="nickname-count"></div>
+            <div class="field-group"><div class="field-label"><label for="intended"><span class="step-number">01</span>내가 의도한 수업</label><span id="intended-count">0 / 200</span></div><textarea id="intended" name="intended" rows="4" required placeholder="예: 모둠별로 의견을 나누며 멋진 발표 자료를 만들고 싶었어요." aria-describedby="intended-count"></textarea></div>
+            <div class="field-group"><div class="field-label"><label for="actual"><span class="step-number">02</span>실제로 이루어진 수업</label><span id="actual-count">0 / 200</span></div><textarea id="actual" name="actual" rows="4" required placeholder="예: 발표 자료보다 모둠 이름 짓기에 더 진심이었던 아이들… 결국 이름만 여섯 개 남았습니다." aria-describedby="actual-count"></textarea></div>
+            <div id="form-error" class="inline-error" role="alert" hidden></div>
+            <button type="submit" class="button primary submit-button" id="submit-story">이야기 나누기 <span data-icon="arrow-right"></span></button>
+            <p class="form-footnote"><span data-icon="check"></span>작성 중인 내용은 이 브라우저에 자동 저장돼요.</p>
+          </form>
+          <div id="submit-success" class="success-state" hidden>
+            <div class="success-icon" data-icon="check"></div><p class="form-kicker">THANK YOU FOR SHARING</p><h2>선생님의 이야기가<br>도착했어요.</h2><p>솔직한 이야기 덕분에<br>우리의 연수가 조금 더 따뜻해졌습니다.</p><button class="button primary wide" id="view-submitted">내 사연 보러 가기 <span data-icon="arrow-right"></span></button><button class="button secondary wide" id="write-another">다른 사연도 남기기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>수업은 가끔 망해도, 우리의 도전은 계속됩니다.</span><div class="footer-actions"><button id="footer-samples" class="text-button">예시 보기</button><button id="admin-toggle" class="text-button">관리자</button></div></footer>
+
+  <dialog id="story-dialog" class="story-dialog" aria-labelledby="detail-name">
+    <div class="dialog-top"><span id="detail-position" class="form-kicker"></span><button class="icon-button" data-close="story-dialog" aria-label="사연 닫기"><span data-icon="x"></span></button></div>
+    <div class="detail-heading"><span class="avatar large" id="detail-avatar"></span><div><p class="eyebrow">선생님의 수업 이야기</p><h2 id="detail-name"></h2></div><span id="detail-sample" class="sample-badge" hidden>예시</span></div>
+    <div class="detail-body"><section><h3><span class="step-number">01</span>내가 의도한 수업</h3><p id="detail-intended"></p></section><section><h3><span class="step-number">02</span>실제로 이루어진 수업</h3><p id="detail-actual"></p></section></div>
+    <div class="dialog-bottom"><button class="heart-button" id="detail-heart" aria-pressed="false"></button><div id="detail-manage" class="manage-actions" hidden><button id="detail-edit" class="text-button">수정</button><button id="detail-delete" class="text-button danger-text">삭제</button></div><div class="dialog-navigation"><button class="icon-button" id="previous-story" aria-label="이전 사연"><span data-icon="arrow-left"></span></button><button class="icon-button" id="next-story" aria-label="다음 사연"><span data-icon="arrow-right"></span></button></div></div>
+  </dialog>
+
+  <dialog id="edit-dialog" class="manage-dialog" aria-labelledby="edit-title">
+    <div class="dialog-top"><h2 id="edit-title">사연 수정하기</h2><button class="icon-button" data-close="edit-dialog" aria-label="수정 닫기"><span data-icon="x"></span></button></div>
+    <form id="edit-form">
+      <div class="field-group"><div class="field-label"><label for="edit-nickname">닉네임</label><span id="edit-nickname-count">0 / 20</span></div><input id="edit-nickname" required autocomplete="nickname" aria-describedby="edit-nickname-count"></div>
+      <div class="field-group"><div class="field-label"><label for="edit-intended">내가 의도한 수업</label><span id="edit-intended-count">0 / 200</span></div><textarea id="edit-intended" rows="4" required aria-describedby="edit-intended-count"></textarea></div>
+      <div class="field-group"><div class="field-label"><label for="edit-actual">실제로 이루어진 수업</label><span id="edit-actual-count">0 / 200</span></div><textarea id="edit-actual" rows="4" required aria-describedby="edit-actual-count"></textarea></div>
+      <div id="edit-error" class="inline-error" role="alert" hidden></div>
+      <div class="manage-dialog-actions"><button type="button" class="button secondary" data-close="edit-dialog">취소</button><button id="save-edit" type="submit" class="button primary">수정 저장</button></div>
+    </form>
+  </dialog>
+  <dialog id="delete-dialog" class="manage-dialog compact-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">사연을 삭제할까요?</h2><p>사연과 함께 받은 하트가 삭제됩니다.<br>삭제한 사연은 되돌릴 수 없어요.</p>
+    <div id="delete-error" class="inline-error" role="alert" hidden></div>
+    <div class="manage-dialog-actions"><button class="button secondary" data-close="delete-dialog" autofocus>취소</button><button id="confirm-delete" class="button danger">삭제하기</button></div>
+  </dialog>
+  <dialog id="admin-dialog" class="manage-dialog compact-dialog" aria-labelledby="admin-title">
+    <div class="dialog-top"><h2 id="admin-title">관리자 로그인</h2><button class="icon-button" data-close="admin-dialog" aria-label="관리자 로그인 닫기"><span data-icon="x"></span></button></div>
+    <form id="admin-form"><div class="field-group"><div class="field-label"><label for="admin-password">관리자 비밀번호</label></div><input id="admin-password" type="password" required autocomplete="current-password"></div><div id="admin-error" class="inline-error" role="alert" hidden></div><button id="admin-login" class="button primary wide" type="submit">로그인</button></form>
+  </dialog>
+
+  <dialog id="qr-dialog" class="qr-dialog" aria-labelledby="qr-title"><div class="dialog-top"><span class="form-kicker">JOIN THE STORIES</span><button class="icon-button" data-close="qr-dialog" aria-label="QR 닫기"><span data-icon="x"></span></button></div><h2 id="qr-title">지금, 이야기 나누러 오세요.</h2><p>카메라로 QR 코드를 스캔해 주세요.</p><img src="/api/qr" width="400" height="400" alt="참여 주소 QR 코드"><p id="join-url" class="join-url"></p><button class="button primary" id="qr-copy"><span data-icon="link"></span>참여 링크 복사</button></dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
