@@ -26,6 +26,12 @@ export function lanAddress() {
 
 async function readJson(req) {
   if (!req.headers['content-type']?.startsWith('application/json')) throw new InputError('JSON 형식으로 전송해 주세요.', 415);
+  // Vercel may parse the request before invoking the Node handler.
+  if (req.body !== undefined) {
+    const raw = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    if (Buffer.byteLength(raw) > 16384) throw new InputError('내용이 너무 깁니다.', 413);
+    try { return JSON.parse(raw); } catch { throw new InputError('요청 내용이 올바르지 않습니다.'); }
+  }
   const chunks = [];
   let bytes = 0;
   for await (const chunk of req) {
