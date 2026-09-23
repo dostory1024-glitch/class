@@ -1,4 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { rootCertificates } from 'node:tls';
 import postgres from 'postgres';
 import { InputError, validateStory, validateStoryFields } from './validation.mjs';
 
@@ -92,7 +94,7 @@ export function createSupabaseStore(connectionString) {
     max: 3,
     idle_timeout: 5,
     connect_timeout: 10,
-    ssl: { rejectUnauthorized: true }
+    ssl: { rejectUnauthorized: true, ca: [...rootCertificates, readFileSync(new URL('./certs/supabase-ca.crt', import.meta.url), 'utf8')] }
   });
   return createPostgresStore({
     query: (text, values = []) => sql.unsafe(text, values),
