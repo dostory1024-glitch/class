@@ -32,7 +32,7 @@ Vercel에서 GitHub 저장소를 Import합니다.
 
 DATABASE_URL은 Production에 설정합니다. Preview 테스트에는 별도 Supabase 프로젝트를 쓰면 실제 참가자의 사연과 테스트 사연이 섞이지 않습니다. 환경 변수를 추가/변경했다면 Redeploy해야 적용됩니다.
 
-Vercel의 Node 서버 진입점 감지를 사용합니다. 별도 프런트엔드 빌드 명령은 필요하지 않습니다. [Vercel 공식 Node 문서](https://vercel.com/docs/functions/runtimes/node-js).
+Vercel은 api/index.mjs 서버 함수와 vercel.json의 rewrites 설정을 사용합니다. 별도 프런트엔드 빌드 명령은 필요하지 않습니다. [Vercel 공식 Node 문서](https://vercel.com/docs/functions/runtimes/node-js).
 
 ## 4. 데이터 저장과 테이블
 
@@ -75,3 +75,7 @@ DB 설정이 없는 Vercel 환경에서는 503으로 저장을 거부합니다. 
 | 홈은 열리나 API가 404 | Root Directory 및 정적 출력 경로를 강제 설정했는지 확인 |
 
 실제 Supabase 연결과 Vercel 공개 배포는 계정 설정 후 위 절차로 확인해야 합니다.
+
+배포 폴더 주의: GitHub에 `workshop-stories-github` 폴더째 올렸다면 Vercel Root Directory를 `workshop-stories-github`로 지정합니다. 파일을 저장소 최상위에 올린 경우에는 비워 둡니다.
+
+Supabase TLS 인증서 검증에는 공식 다운로드 인증서 `src/certs/supabase-ca.crt`를 사용합니다. 출처: https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt

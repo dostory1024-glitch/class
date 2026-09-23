@@ -46,3 +46,10 @@ No public internet hosting provisioned, no firewall changes. Local phone connect
 - Full automated suite: 21 passed. Browser QA verified owner controls, saved edits with retained hearts, absent controls for another visitor, admin login/editing, delete confirmation/cancel, and logout removing admin controls.
 - Review identified a busy-dialog backdrop race; backdrop/open guards now preserve pending operations.
 - Hosted Supabase connectivity remains unverified until DATABASE_URL is configured.
+
+## Vercel production 404 fix
+- Found uploaded app under workshop-stories-github while Root Directory was empty; corrected project setting.
+- Replaced unsupported server.mjs function matching with api/index.mjs and a catch-all rewrite.
+- Added pre-parsed JSON request support and two entrypoint regression tests; 23 tests pass.
+- Bundled official Supabase Root 2021 CA for verified TLS; certificate and hostname verification remain enabled.
+- Production verification passed at https://class-five-alpha.vercel.app: create, shared read, heart, owner edit preserving heart, delete. Only the verification story was removed.

@@ -11,7 +11,7 @@
 3. Supabase 프로젝트의 Connect → Transaction pooler에서 URI를 복사해 Vercel 서버 환경 변수 **DATABASE_URL**에 설정합니다.
 4. 환경 변수 연결 후 Redeploy합니다. 최초 DB 요청 시 두 테이블과 인덱스가 자동으로 만들어집니다.
 
-배포 후 사연과 하트는 **Supabase 서버의 PostgreSQL DB**에 저장됩니다. Vercel 재배포나 함수 재시작과 별개로 보존됩니다. DB가 연결되지 않은 Vercel 환경에서는 저장하지 않습니다. 실제 GitHub 업로드, Supabase 계정/DB 생성, Vercel 공개 배포는 아직 수행하지 않았습니다.
+배포 후 사연과 하트는 **Supabase 서버의 PostgreSQL DB**에 저장됩니다. Vercel 재배포나 함수 재시작과 별개로 보존됩니다. DB가 연결되지 않은 Vercel 환경에서는 저장하지 않습니다. GitHub 저장소와 Vercel 배포가 연결되어 있습니다.
 
 ## 로컬 실행
 
@@ -57,11 +57,12 @@ Windows에서는 `실행하기.cmd`를 더블클릭합니다. Node.js 24.x가 �
 
 실행: `node --test tests/*.test.mjs`
 
-21개 테스트로 SQLite/HTTP 경로와 PostgreSQL 저장, 중복 요청, 하트 취소, 한글 처리, 클라우드 저장소 미설정, 소유자/관리자 수정·삭제 권한을 확인했습니다. PostgreSQL 쿼리는 실제 PostgreSQL 엔진인 PGlite로 검증했으며 실제 Supabase 계정 연결은 배포 후 별도 확인해야 합니다. [검증 기록](./docs/verification.md).
+23개 테스트로 SQLite/HTTP 경로와 PostgreSQL 저장, 중복 요청, 하트 취소, 한글 처리, 클라우드 저장소 미설정, 소유자/관리자 수정·삭제 권한을 확인했습니다. PostgreSQL 쿼리는 실제 PostgreSQL 엔진인 PGlite로 검증했으며 실제 Supabase 계정 연결은 배포 후 별도 확인해야 합니다. [검증 기록](./docs/verification.md).
 
 ## 구성 및 출처
 
-- server.mjs: 로컬/Vercel 공통 Node 서버 진입점
+- server.mjs: 로컬 Node 서버 진입점
+- api/index.mjs: Vercel 서버 함수 진입점
 - src/configured-store.mjs: 환경에 따른 저장소 선택
 - src/postgres-store.mjs: Postgres.js 드라이버와 PostgreSQL 저장
 - src/store.mjs: 로컬 SQLite 저장
@@ -71,3 +72,7 @@ Windows에서는 `실행하기.cmd`를 더블클릭합니다. Node.js 24.x가 �
 - [Pretendard](https://github.com/orioncactus/pretendard) — 라이선스는 public/fonts/LICENSE.txt에 포함
 - [node-qrcode](https://github.com/soldair/node-qrcode) — 서버에서 QR 생성
 
+
+배포 폴더 주의: GitHub에 `workshop-stories-github` 폴더째 올렸다면 Vercel Root Directory를 `workshop-stories-github`로 지정합니다. 파일을 저장소 최상위에 올린 경우에는 비워 둡니다.
+
+Supabase TLS 인증서 검증에는 공식 다운로드 인증서 `src/certs/supabase-ca.crt`를 사용합니다. 출처: https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt
